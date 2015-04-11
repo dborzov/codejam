@@ -42,8 +42,10 @@ def pow(a, p):
 
 
 def solver(X, expr):
-    print "~~~~~~~"
-    print "called with %s, and \"%s\"" % (X, expr)
+    # print "~~~~~~~"
+    # print "called with %s, and \"%s\"" % (X, expr)
+    if len(expr)*X <3:
+        return "NO"
     set_of_i_breaks = []
     set_of_k_breaks = []
     PrefixSum = []
@@ -56,6 +58,7 @@ def solver(X, expr):
             set_of_k_breaks.append({"X":0,"pos": len(PrefixSum)})
         PrefixSum.append(cur)
     M = PrefixSum[-1]
+    # print "Prefix sum: %s " % PrefixSum
     if pow(M,X) != "-1":
         return "NO"
     Ms = [M, pow(M,2), pow(M,3)]
@@ -73,9 +76,8 @@ def solver(X, expr):
 
 
 
-    print "Prefix sum: %s " % PrefixSum
-    print "set of i breaks: %s " % set_of_i_breaks
-    print "set of k breaks: %s " % set_of_k_breaks
+    # print "set of i breaks: %s " % set_of_i_breaks
+    # print "set of k breaks: %s " % set_of_k_breaks
 
     if len(set_of_i_breaks) == 0 or len(set_of_k_breaks) == 0:
         return "NO"
@@ -89,7 +91,7 @@ def solver(X, expr):
 
         k_breakers.append((4*padding_of_1s + breaker["X"])*len(expr) + breaker["pos"])
     RIGHTIEST_k = max(k_breakers)
-    print "print of L&R: %s, %s " % (LEFTIEST_i, RIGHTIEST_k)
+    # print "print of L&R: %s, %s " % (LEFTIEST_i, RIGHTIEST_k)
     if LEFTIEST_i < RIGHTIEST_k:
         return "YES"
     else:
@@ -98,5 +100,6 @@ def solver(X, expr):
 num_tests = input()
 for i in range(1,num_tests+1):
     L, X = str(raw_input()).rstrip().split(" ")
-    expr = raw_input()
-    print "Case #%s: %s" % (i, solver(int(X), expr)) 
+    expr = raw_input().rstrip()
+    print "Case #%s: %s" % (i, solver(int(X), expr))
+ 
