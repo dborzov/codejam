@@ -7,7 +7,8 @@ def minimal_minutes(P, log=False):
     let_them_eat = [i-1 for i in P if i>1]
     optimal_mins = minimal_minutes(let_them_eat)
 
-    for j in range(2,P[0]/2+1):
+    if P[0] > 1:
+        j =P[0]/2
         new_P = P[:]
         new_P[0] = new_P[0] - j
         new_P.append(j)
@@ -21,12 +22,10 @@ def minimal_minutes(P, log=False):
 
 
 
-
-
 num_tests = input()
 for i in range(1,num_tests+1):
     D = int(input())
     P= [int(sym) for sym in raw_input().split(" ")]
+    print P
     print "Case #%s: %s" % (i, minimal_minutes(P, log=True))
-
 
