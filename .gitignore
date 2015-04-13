@@ -58,3 +58,7 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Not include stdin and stdout files
+*.in
+*.out
