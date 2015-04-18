@@ -27,6 +27,6 @@ num_tests = input()
 for i in range(1,num_tests+1):
     D = int(input())
     P= [int(sym) for sym in raw_input().split(" ")]
-    print "Case #%s: %s" % (i, minimal_minutes(P, log=True))
+    print "Case #%s: %s" % (i, minimal_minutes(P))
 
 
