@@ -20,8 +20,25 @@ def log(*args, **kwargs):
 
 
 
-def solver():
-    log("solver is called with: ", locals)
+def solver(P):
+    log("called with ", P)
+    min_rate = 0
+    m1 = 0
+    for i in range(len(P)-1):
+        eaten = P[i] - P[i+1] if P[i]> P[i+1] else 0
+        m1 += eaten
+        if eaten > min_rate:
+            min_rate = eaten
+            log("reasign min_rate to  ", min_rate,"at ", i)
+
+    m2 = 0
+    for i in range(len(P)-1):
+        m2 += min(P[i], min_rate)
+
+    return "%s %s" % (m1, m2)
+
+
+
 
 num_tests = input()
 for i in range(1,num_tests+1):
