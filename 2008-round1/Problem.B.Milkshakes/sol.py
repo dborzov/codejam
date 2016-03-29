@@ -18,8 +18,10 @@ def log(*args, **kwargs):
 
 
 input_data = open(sys.argv[1])
-num_tests = int(input_data.readline().rstrip())
-for i in range(1,num_tests+1):
+filename, _ = sys.argv[1].split(".")
+output_data = open(filename + ".out","w")
+
+def solve_one():
     N = int(input_data.readline().rstrip())
     M = int(input_data.readline().rstrip())
     result = [0 for i in range(N)]
@@ -42,31 +44,44 @@ for i in range(1,num_tests+1):
                 malted_flavour_prefs[customer_id] = flavour
                 malted_flavour_customers[flavour].append(customer_id)
             T +=2
-    log("Flavours to which customers like them: ",flavour_customers)
-    log("Index of flavours with lists of the customers that like them: ",customer_prefs)
 
+    log("Flavours to which customers like them: ",flavour_customers)
+    log("Malted prefs: ",malted_flavour_prefs)
+    log("Malted dhash_flavours_customers: ",malted_flavour_customers)
     while True:
+        log("  -- iterated dhash[customer->nonmalted]: ",customer_prefs)
         cur_malted_flavour = None
+        # import pdb; pdb.set_trace()
+        # looking for the unsatisfied customer that cant be satisfied by available
+        # non-malted flavours
+        # will have to treat her malted flavour cur_malted_flavour
+        # as to be batched
         for customer in customer_prefs.keys():
             # keys in customer prefs store unsatisfied customers
             if len(customer_prefs[customer])==0:
+                if customer not in malted_flavour_prefs:
+                    return 'IMPOSSIBLE'
                 cur_malted_flavour = malted_flavour_prefs[customer]
                 break
-        if not cur_malted_flavour:
+        if cur_malted_flavour is None:
             break
         result[cur_malted_flavour] = 1
+
         for satisfied_customer in malted_flavour_customers[cur_malted_flavour]:
             if satisfied_customer not in customer_prefs:
                 continue
             del customer_prefs[satisfied_customer]
+
         # turn off that it matters that other people like the unmalted flavour
         for customer in flavour_customers[cur_malted_flavour].keys():
-            if satisfied_customer not in customer_prefs:
+            if customer not in customer_prefs:
                 continue
             del customer_prefs[customer][cur_malted_flavour]
+    return " ".join([str(i) for i in result])
 
-    log("NEXT: %s" % result)
-
+num_tests = int(input_data.readline().rstrip())
+for i in range(1,num_tests+1):
+    output_data.write("Case #%s: %s\n" %(i, solve_one()))
 
 
 
