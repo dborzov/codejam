@@ -25,7 +25,7 @@ def solve_one():
     N = int(input_data.readline().rstrip())
     M = int(input_data.readline().rstrip())
     result = [0 for i in range(N)]
-    flavour_customers = {i:{} for i in range(N)}
+    dhash_fl_cus = {i:{} for i in range(N)}
     malted_flavour_prefs = {}
     malted_flavour_customers = {i:[] for i in range(N)}
     customer_prefs = {i:{} for i in range(M)}
@@ -38,18 +38,15 @@ def solve_one():
             flavour = int(likes[T]) -1
             if likes[T+1]=='0':
                 # import pdb; pdb.set_trace()
-                flavour_customers[flavour][customer_id] = '!'
+                dhash_fl_cus[flavour][customer_id] = '!'
                 customer_prefs[customer_id][flavour] = '$'
             else:
                 malted_flavour_prefs[customer_id] = flavour
                 malted_flavour_customers[flavour].append(customer_id)
             T +=2
 
-    log("Flavours to which customers like them: ",flavour_customers)
-    log("Malted prefs: ",malted_flavour_prefs)
-    log("Malted dhash_flavours_customers: ",malted_flavour_customers)
     while True:
-        log("  -- iterated dhash[customer->nonmalted]: ",customer_prefs)
+        # log("  -- iterated dhash[customer->nonmalted]: ",customer_prefs)
         cur_malted_flavour = None
         # import pdb; pdb.set_trace()
         # looking for the unsatisfied customer that cant be satisfied by available
@@ -73,7 +70,7 @@ def solve_one():
             del customer_prefs[satisfied_customer]
 
         # turn off that it matters that other people like the unmalted flavour
-        for customer in flavour_customers[cur_malted_flavour].keys():
+        for customer in dhash_fl_cus[cur_malted_flavour].keys():
             if customer not in customer_prefs:
                 continue
             del customer_prefs[customer][cur_malted_flavour]
